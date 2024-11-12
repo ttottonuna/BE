@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# application.properties 파일을 Git에서 제외
+/src/main/resources/application.properties
+
 ### STS ###
 .apt_generated
 .classpath
@@ -22,7 +25,6 @@ bin/
 *.iws
 *.iml
 *.ipr
-*.yml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
