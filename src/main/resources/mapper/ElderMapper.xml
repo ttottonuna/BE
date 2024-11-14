@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.elder.mapper.ElderMapper">
+
+
+        <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.elder.dto.ElderDTO" resultType="org.kdt.mooluck.elder.dto.ElderDTO">
+            SELECT elder_id AS elderId, elder_account AS elderAccount, elder_pwd AS elderPwd
+            FROM elder
+            WHERE elder_account = #{elderAccount} AND elder_pwd = #{elderPwd}
+        </select>
+
+
+
+</mapper>
