@@ -7,5 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface ElderMapper {
-    ElderDTO getMemberByMemberId(ElderDTO elderDto);
+    String getMemberByMemberId(ElderDTO elderDTO);
+    //ElderDTO getMemberByMemberId(ElderDTO elderDto);
 }

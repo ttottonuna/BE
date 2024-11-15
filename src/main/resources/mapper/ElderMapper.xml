@@ -5,13 +5,10 @@
 
 <mapper namespace="org.kdt.mooluck.elder.mapper.ElderMapper">
 
-
-        <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.elder.dto.ElderDTO" resultType="org.kdt.mooluck.elder.dto.ElderDTO">
-            SELECT elder_id AS elderId, elder_account AS elderAccount, elder_pwd AS elderPwd
-            FROM elder
-            WHERE elder_account = #{elderAccount} AND elder_pwd = #{elderPwd}
-        </select>
-
-
+    <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.elder.dto.ElderDTO" resultType="String">
+        SELECT elder_id
+        FROM elder
+        WHERE elder_account = #{elderAccount} AND elder_pwd = #{elderPwd}
+    </select>
 
 </mapper>

@@ -5,6 +5,8 @@ import org.kdt.mooluck.elder.dto.ElderDTO;
 import org.kdt.mooluck.elder.service.ElderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.lang.*;
+import java.util.*;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +24,16 @@ public class ElderController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CustomResponse> login(@RequestBody ElderDTO elderDto) {
-        boolean isValid = elderService.validateMember(elderDto);
-        if (isValid) {
-            return ResponseEntity.ok(CustomResponse.success("Login successful"));
-        } else {
-            return ResponseEntity.status(401).body(CustomResponse.message("Invalid credentials"));
-        }
+    public ResponseEntity<CustomResponse> getMemberByMemberId(@RequestBody ElderDTO elderDTO) {
+        String elderId = elderService.getMemberByMemberId(elderDTO);
+
+        // elderId 값을 Map으로 감싸서 전달
+        Map<String, String> responseData = Map.of("elderId", elderId);
+        CustomResponse response = CustomResponse.success(responseData);
+
+        return ResponseEntity.ok(response);
     }
+
 
 
 //    @PostMapping("/login")
