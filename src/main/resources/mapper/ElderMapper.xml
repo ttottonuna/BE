@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.kdt.mooluck.elder.mapper.ElderMapper">
+<mapper namespace="org.kdt.mooluck.domain.elder.mapper.ElderMapper">
 
-    <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.elder.dto.ElderDTO" resultType="String">
+    <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.domain.elder.dto.ElderDTO" resultType="String">
         SELECT elder_id
         FROM elder
         WHERE elder_account = #{elderAccount} AND elder_pwd = #{elderPwd}

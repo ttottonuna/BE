@@ -16,6 +16,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 )
 @SpringBootApplication
 @MapperScan("org.kdt.mooluck.domain.**.mapper")
+//@MapperScan("org.kdt.mooluck.elder.mapper")
+
 public class MooluckApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MooluckApplication.class, args);

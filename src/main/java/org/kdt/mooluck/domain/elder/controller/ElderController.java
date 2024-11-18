@@ -1,8 +1,8 @@
-package org.kdt.mooluck.elder.controller;
+package org.kdt.mooluck.domain.elder.controller;
 
 import org.kdt.mooluck.custom.CustomResponse;
-import org.kdt.mooluck.elder.dto.ElderDTO;
-import org.kdt.mooluck.elder.service.ElderService;
+import org.kdt.mooluck.domain.elder.service.ElderService;
+import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.lang.*;
@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @RequestMapping("/api/elders")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ElderController {
 
     private final ElderService elderService;

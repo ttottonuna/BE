@@ -1,6 +1,6 @@
-package org.kdt.mooluck.elder.service;
+package org.kdt.mooluck.domain.elder.service;
 
-import org.kdt.mooluck.elder.dto.ElderDTO;
+import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 
 public interface ElderService {
     //boolean validateMember(ElderDTO elderDto);

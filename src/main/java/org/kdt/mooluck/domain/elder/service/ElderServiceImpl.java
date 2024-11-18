@@ -1,12 +1,10 @@
 
-package org.kdt.mooluck.elder.service;
+package org.kdt.mooluck.domain.elder.service;
 
-import lombok.extern.slf4j.Slf4j;
-import org.kdt.mooluck.elder.mapper.ElderMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.kdt.mooluck.domain.elder.exception.ElderNotFoundException;
+import org.kdt.mooluck.domain.elder.mapper.ElderMapper;
 import org.springframework.stereotype.Service;
-import org.kdt.mooluck.elder.dto.ElderDTO;
-import org.kdt.mooluck.elder.exception.ElderNotFoundException;
+import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 
 
 @Service

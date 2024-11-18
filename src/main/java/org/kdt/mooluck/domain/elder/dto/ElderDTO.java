@@ -1,4 +1,4 @@
-package org.kdt.mooluck.weather.dto;
+package org.kdt.mooluck.domain.elder.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WeatherDTO {
-    private String weatherIcon;
-    private Integer timestamp;
+public class ElderDTO {
+    private Long elderId;
+    private String elderAccount;
+    private String elderPwd;
 
 }

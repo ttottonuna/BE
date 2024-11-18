@@ -1,9 +1,7 @@
-package org.kdt.mooluck.elder.mapper;
+package org.kdt.mooluck.domain.elder.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.kdt.mooluck.elder.dto.ElderDTO;
-
-import java.util.List;
+import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 
 @Mapper
 public interface ElderMapper {

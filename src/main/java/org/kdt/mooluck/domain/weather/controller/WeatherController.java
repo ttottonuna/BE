@@ -1,10 +1,8 @@
-package org.kdt.mooluck.weather.controller;
+package org.kdt.mooluck.domain.weather.controller;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Property;
 import org.kdt.mooluck.custom.CustomResponse;
-import org.kdt.mooluck.weather.dto.WeatherDTO;
+import org.kdt.mooluck.domain.weather.dto.WeatherDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
