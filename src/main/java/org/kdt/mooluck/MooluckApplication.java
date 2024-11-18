@@ -15,13 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 		)
 )
 @SpringBootApplication
-<<<<<<< HEAD
-@MapperScan("org.kdt.mooluck.elder.mapper") // ElderMapper가 위치한 패키지를 정확하게 지정
-=======
-//@MapperScan("org.kdt.mooluck.domain.alert.mapper")
 @MapperScan("org.kdt.mooluck.domain.**.mapper")
-
->>>>>>> 26423bc (feat : admin login/signup/logout)
 public class MooluckApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MooluckApplication.class, args);
