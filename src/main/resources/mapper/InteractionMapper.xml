@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.domain.interaction.mapper.InteractionMapper">
+
+    <!-- pet_count 증가 쿼리 -->
+    <update id="incrementPetCount">
+        UPDATE interaction
+        SET pet_count = pet_count + 1
+        WHERE elder_id = #{elderId}
+    </update>
+
+</mapper>
