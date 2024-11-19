@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-
 public class AgencyTableDTO {
-    private Long interactionId;   // Interaction 테이블의 interaction_id
-    private Long totalCount;      // Interaction 테이블의 water_count + pet_count
-    private String status;        // Interaction 테이블의 status
-    private Long elderId;         // Elder 테이블의 elder_id
-    private String elderName;     // Elder 테이블의 name
-    private String elderAddress;  // Elder 테이블의 address
-    private LocalDateTime lastCheckIn; // Interaction 테이블의 last_interaction
+    private Long interactionId;        // i.interaction_id
+    private Long totalCount;           // CAST(i.water_count + i.pet_count AS SIGNED)
+    private String status;             // i.status
+    private Long elderId;              // e.elder_id
+    private String elderName;          // e.elder_name
+    private String elderAddress;       // e.elder_address
+    private LocalDateTime lastCheckIn; // i.last_interaction
+    private Long staffId;              // e.staff_id
 }

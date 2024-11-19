@@ -17,21 +17,23 @@
     </resultMap>
 
     <!-- SQL 쿼리 -->
-    <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO" resultMap="AdminTableResultMap">
+    <select id="getMembersByStaffId" parameterType="long" resultType="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
         SELECT
-            i.interaction_id AS interaction_id,
-            i.water_count + i.pet_count AS total_count,
+            i.interaction_id AS interactionId,
+            CAST(i.water_count + i.pet_count AS SIGNED) AS totalCount,
             i.status AS status,
-            e.elder_id AS elder_id,
-            e.elder_name AS elder_name,
-            e.elder_address AS elder_address,
-            i.last_interaction AS last_interaction
+            e.elder_id AS elderId,
+            e.elder_name AS elderName,
+            e.elder_address AS elderAddress,
+            i.last_interaction AS lastCheckIn,
+            e.staff_id AS staffId
         FROM
-            interaction i
-                INNER JOIN
-            elder e ON i.elder_id = e.elder_id
+            elder e
+                LEFT JOIN
+            interaction i ON e.elder_id = i.elder_id
         WHERE
-            e.elder_id = #{elderId}
+            e.staff_id = #{staffId}
     </select>
+
 
 </mapper>
