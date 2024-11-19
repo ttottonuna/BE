@@ -6,5 +6,5 @@ import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 @Mapper
 public interface ElderMapper {
     String getMemberByMemberId(ElderDTO elderDTO);
-    //ElderDTO getMemberByMemberId(ElderDTO elderDto);
+//    ElderDTO getMemberByMemberId(ElderDTO elderDto);
 }
