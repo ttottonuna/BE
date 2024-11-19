@@ -2,7 +2,9 @@ package org.kdt.mooluck.domain.admin.service;
 
 import jakarta.annotation.PostConstruct;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
+import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
 import org.kdt.mooluck.domain.admin.mapper.AgencyStaffMapper;
+import org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper;
 import org.kdt.mooluck.security.JwtTokenProvider;
 import org.kdt.mooluck.exception.CustomException;
 import org.slf4j.Logger;
@@ -21,14 +23,17 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
     private final AgencyStaffMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final AgencyTableMapper agencyTableMapper;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     // 토큰 블랙리스트 관리
     private final Set<String> tokenBlacklist = new HashSet<>();
 
-    public AgencyStaffServiceImpl(AgencyStaffMapper mapper, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public AgencyStaffServiceImpl(AgencyStaffMapper mapper, PasswordEncoder passwordEncoder, AgencyTableMapper agencyTableMapper, JwtTokenProvider jwtTokenProvider) {
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.agencyTableMapper = agencyTableMapper;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -43,6 +48,19 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
         mapper.insertStaff(staff);
 
         logger.info("회원가입 성공: {}", staff.getStaff_email());
+    }
+
+    @Override
+    public AgencyTableDTO getMemberById(Long elderId) {
+        // DTO 생성 및 매퍼 호출
+        AgencyTableDTO queryDto = new AgencyTableDTO();
+        queryDto.setElderId(elderId);
+
+        AgencyTableDTO result = agencyTableMapper.getMemberByMemberId(queryDto); // DTO를 전달
+        if (result == null) {
+            throw new IllegalArgumentException("No data found for Interaction ID: " + elderId);
+        }
+        return result;
     }
 
     @Override
