@@ -5,10 +5,19 @@
 
 <mapper namespace="org.kdt.mooluck.domain.interaction.mapper.InteractionMapper">
 
-    <!-- pet_count 증가 쿼리 -->
+    <!-- pet_count와 total_count 증가 -->
     <update id="incrementPetCount">
         UPDATE interaction
-        SET pet_count = pet_count + 1
+        SET pet_count = pet_count + 1,
+            total_count = total_count + 1
+        WHERE elder_id = #{elderId}
+    </update>
+
+    <!-- water_count와 total_count 증가 -->
+    <update id="incrementWaterCount">
+        UPDATE interaction
+        SET water_count = water_count + 1,
+            total_count = total_count + 1
         WHERE elder_id = #{elderId}
     </update>
 
