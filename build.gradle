@@ -29,30 +29,54 @@ ext {
 }
 
 dependencies {
+	// Spring Boot 기본 의존성
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	// MyBatis Spring Boot Starter (중복된 버전 제거)
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'mysql:mysql-connector-java:8.0.33'
+
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+	// MySQL Driver
+	runtimeOnly 'mysql:mysql-connector-java'  // 중복된 MySQL 드라이버 제거
+
+	// 개발용 의존성
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
+	// 테스트 의존성
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
 	testImplementation 'org.springframework.batch:spring-batch-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-//	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-crypto' // PasswordEncoder용
+//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리
+
 }
+
+
+
+
+
+
 
 tasks.named('test') {
 	outputs.dir snippetsDir
