@@ -18,4 +18,10 @@ public class InteractionServiceImpl implements InteractionService {
     public void incrementPetCount(int elderId) {
         interactionMapper.incrementPetCount(elderId);
     }
+
+    @Override
+    @Transactional
+    public void incrementWaterCount(int elderId) { // 새로운 메서드 구현
+        interactionMapper.incrementWaterCount(elderId);
+    }
 }
