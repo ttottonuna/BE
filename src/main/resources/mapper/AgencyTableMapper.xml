@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper">
+
+    <!-- 결과 매핑 정의 -->
+    <resultMap id="AdminTableResultMap" type="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
+        <result column="interaction_id" property="interactionId"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="status" property="status"/>
+        <result column="elder_id" property="elderId"/>
+        <result column="elder_name" property="elderName"/>
+        <result column="elder_address" property="elderAddress"/>
+        <result column="last_interaction" property="lastCheckIn"/>
+    </resultMap>
+
+    <!-- SQL 쿼리 -->
+    <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO" resultMap="AdminTableResultMap">
+        SELECT
+            i.interaction_id AS interaction_id,
+            i.water_count + i.pet_count AS total_count,
+            i.status AS status,
+            e.elder_id AS elder_id,
+            e.elder_name AS elder_name,
+            e.elder_address AS elder_address,
+            i.last_interaction AS last_interaction
+        FROM
+            interaction i
+                INNER JOIN
+            elder e ON i.elder_id = e.elder_id
+        WHERE
+            e.elder_id = #{elderId}
+    </select>
+
+</mapper>
