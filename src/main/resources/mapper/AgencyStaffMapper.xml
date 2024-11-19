@@ -8,6 +8,7 @@
     </insert>
 
     <select id="findByEmail" resultType="org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO">
-        SELECT * FROM agencystaff WHERE staff_email = #{staff_email}
+        SELECT * FROM agencystaff WHERE staff_email = #{staff_email} LIMIT 1
     </select>
+
 </mapper>

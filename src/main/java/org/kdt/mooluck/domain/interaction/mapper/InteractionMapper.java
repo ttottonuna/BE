@@ -7,4 +7,7 @@ import org.apache.ibatis.annotations.Param;
 public interface InteractionMapper {
     // 특정 elder의 pet_count 증가
     void incrementPetCount(@Param("elderId") int elderId);
+
+    // 특정 elder의 water_count 증가
+    void incrementWaterCount(@Param("elderId") int elderId);
 }
