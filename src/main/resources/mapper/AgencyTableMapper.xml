@@ -14,6 +14,7 @@
         <result column="elder_name" property="elderName"/>
         <result column="elder_address" property="elderAddress"/>
         <result column="last_interaction" property="lastCheckIn"/>
+        <result column="elder_number" property="elderNumber"/>
     </resultMap>
 
     <!-- SQL 쿼리 -->
@@ -27,6 +28,7 @@
             e.elder_address AS elderAddress,
             i.last_interaction AS lastCheckIn,
             e.staff_id AS staffId,
+            e.elder_number AS elderNumber,
 
             i.first_interval AS firstInterval,
             i.second_interval AS secondInterval,
