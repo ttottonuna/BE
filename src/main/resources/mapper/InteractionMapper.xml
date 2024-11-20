@@ -62,5 +62,4 @@
             first_interval = 0, second_interval = 0, third_interval = 0, fourth_interval = 0
     </update>
 
-
 </mapper>
