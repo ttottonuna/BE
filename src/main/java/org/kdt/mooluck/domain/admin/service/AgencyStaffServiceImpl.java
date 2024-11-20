@@ -2,7 +2,10 @@ package org.kdt.mooluck.domain.admin.service;
 
 import jakarta.annotation.PostConstruct;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
+import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
+import org.kdt.mooluck.domain.admin.dto.TableResponseDTO;
 import org.kdt.mooluck.domain.admin.mapper.AgencyStaffMapper;
+import org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper;
 import org.kdt.mooluck.security.JwtTokenProvider;
 import org.kdt.mooluck.exception.CustomException;
 import org.slf4j.Logger;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -21,14 +25,17 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
     private final AgencyStaffMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private  final AgencyTableMapper agencyTableMapper;
+
     private final JwtTokenProvider jwtTokenProvider;
 
     // 토큰 블랙리스트 관리
     private final Set<String> tokenBlacklist = new HashSet<>();
 
-    public AgencyStaffServiceImpl(AgencyStaffMapper mapper, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
+    public AgencyStaffServiceImpl(AgencyStaffMapper mapper, PasswordEncoder passwordEncoder, AgencyTableMapper agencyTableMapper, JwtTokenProvider jwtTokenProvider) {
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.agencyTableMapper = agencyTableMapper;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -44,6 +51,14 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
         logger.info("회원가입 성공: {}", staff.getStaff_email());
     }
+
+
+    @Override
+    public List<AgencyTableDTO> getMembersByStaffId(Long staffId) {
+        return agencyTableMapper.getMembersByStaffId(staffId);
+    }
+
+
 
     @Override
     public String login(String email, String password) {

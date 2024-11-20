@@ -12,4 +12,5 @@ public class InteractionDTO {
     private int pet_Count;
     private String last_Interaction;
     private String status;
+
 }

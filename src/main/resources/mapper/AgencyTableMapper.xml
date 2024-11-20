@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper">
+
+    <!-- 결과 매핑 정의 -->
+    <resultMap id="AdminTableResultMap" type="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
+        <result column="interaction_id" property="interactionId"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="status" property="status"/>
+        <result column="elder_id" property="elderId"/>
+        <result column="elder_name" property="elderName"/>
+        <result column="elder_address" property="elderAddress"/>
+        <result column="last_interaction" property="lastCheckIn"/>
+        <result column="elder_number" property="elderNumber"/>
+    </resultMap>
+
+    <!-- SQL 쿼리 -->
+    <select id="getMembersByStaffId" parameterType="long" resultType="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
+        SELECT
+            i.interaction_id AS interactionId,
+            CAST(i.water_count + i.pet_count AS SIGNED) AS totalCount,
+            i.status AS status,
+            e.elder_id AS elderId,
+            e.elder_name AS elderName,
+            e.elder_address AS elderAddress,
+            i.last_interaction AS lastCheckIn,
+            e.staff_id AS staffId,
+            e.elder_number AS elderNumber,
+
+            i.first_interval AS firstInterval,
+            i.second_interval AS secondInterval,
+            i.third_interval AS thirdInterval,
+            i.fourth_interval AS fourthInterval
+        FROM
+            elder e
+                LEFT JOIN
+            interaction i ON e.elder_id = i.elder_id
+        WHERE
+            e.staff_id = #{staffId}
+    </select>
+
+
+</mapper>

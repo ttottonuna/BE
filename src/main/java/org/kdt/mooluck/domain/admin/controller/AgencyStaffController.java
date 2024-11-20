@@ -1,15 +1,20 @@
 package org.kdt.mooluck.domain.admin.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.kdt.mooluck.custom.CustomResponse;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
+import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
 import org.kdt.mooluck.domain.admin.service.AgencyStaffService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Admin Controller", description = "API about admin Service")
+
 public class AgencyStaffController {
 
     private final AgencyStaffService service;
@@ -41,6 +46,12 @@ public class AgencyStaffController {
         }
         service.logout(token); // 서비스 로직 호출
         return ResponseEntity.ok(CustomResponse.message("로그아웃 성공"));
+    }
+
+    @GetMapping("/table")
+    public ResponseEntity<CustomResponse> getMembersByStaffId(@RequestParam Long staffId) {
+        List<AgencyTableDTO> agencyTableDTOs = service.getMembersByStaffId(staffId);
+        return ResponseEntity.ok(CustomResponse.success(agencyTableDTOs));
     }
 
 }
