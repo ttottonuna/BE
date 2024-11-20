@@ -3,35 +3,35 @@
 
 <mapper namespace="org.kdt.mooluck.domain.alert.mapper.AlertMapper">
 
-    <!-- 특정 elderId에 대한 모든 알림 조회 -->
-    <select id="getAlertsByElderId" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">
-        SELECT * FROM alert WHERE elder_id = #{elderId}
-    </select>
+<!--    &lt;!&ndash; 특정 elderId에 대한 모든 알림 조회 &ndash;&gt;-->
+<!--    <select id="getAlertsByElderId" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">-->
+<!--        SELECT * FROM alert WHERE elder_id = #{elderId}-->
+<!--    </select>-->
 
-    <!-- 특정 alertId에 대한 알림 조회 -->
-    <select id="getAlertById" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">
-        SELECT * FROM alert WHERE alert_id = #{alertId}
-    </select>
+<!--    &lt;!&ndash; 특정 alertId에 대한 알림 조회 &ndash;&gt;-->
+<!--    <select id="getAlertById" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">-->
+<!--        SELECT * FROM alert WHERE alert_id = #{alertId}-->
+<!--    </select>-->
 
-    <!-- 새 알림 추가 -->
-    <insert id="insertAlert">
-        INSERT INTO alert (elder_id, alert_time, alert_type, resolved)
-        VALUES (#{elderId}, #{alertTime}, #{alertType}, #{resolved})
-    </insert>
+<!--    &lt;!&ndash; 새 알림 추가 &ndash;&gt;-->
+<!--    <insert id="insertAlert">-->
+<!--        INSERT INTO alert (elder_id, alert_time, alert_type, resolved)-->
+<!--        VALUES (#{elderId}, #{alertTime}, #{alertType}, #{resolved})-->
+<!--    </insert>-->
 
-    <!-- 알림의 resolved 상태 업데이트 -->
-    <update id="updateAlertStatus">
-        UPDATE alert SET resolved = #{resolved} WHERE alert_id = #{alertId}
-    </update>
+<!--    &lt;!&ndash; 알림의 resolved 상태 업데이트 &ndash;&gt;-->
+<!--    <update id="updateAlertStatus">-->
+<!--        UPDATE alert SET resolved = #{resolved} WHERE alert_id = #{alertId}-->
+<!--    </update>-->
 
-    <!-- 사용자 알림 시간 설정 조회 -->
-    <select id="getAlertSettings" resultType="org.kdt.mooluck.domain.alert.AlertSetting">
-        SELECT user_id, alert_time FROM alert_settings
-    </select>
+<!--    &lt;!&ndash; 사용자 알림 시간 설정 조회 &ndash;&gt;-->
+<!--    <select id="getAlertSettings" resultType="org.kdt.mooluck.domain.alert.AlertSetting">-->
+<!--        SELECT elder_id, alert_time FROM alert-->
+<!--    </select>-->
 
-    <select id="getActiveAlertByElderId" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">
-        SELECT * FROM alerts WHERE elder_id = #{elderId} AND resolved = false LIMIT 1
-    </select>
+<!--    <select id="getActiveAlertByElderId" resultType="org.kdt.mooluck.domain.alert.dto.AlertDTO">-->
+<!--        SELECT * FROM alert WHERE elder_id = #{elderId} AND resolved = false LIMIT 1-->
+<!--    </select>-->
 
 
 </mapper>
