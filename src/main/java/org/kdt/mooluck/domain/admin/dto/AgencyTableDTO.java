@@ -15,4 +15,10 @@ public class AgencyTableDTO {
     private String elderAddress;       // e.elder_address
     private LocalDateTime lastCheckIn; // i.last_interaction
     private Long staffId;              // e.staff_id
+
+    // interval
+    private int firstInterval;
+    private int secondInterval;
+    private int thirdInterval;
+    private int fourthInterval;
 }
