@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(
 		info = @Info(
-				title = "[스프링 리트리버] '무럭이' API 명세서",
+				title = " 반려식물 아바타 '무럭이' API 명세서",
 				version = "1.0",
-				description = "수호 있는 수호팀 화이팅!"
+				description = "스프링 리트리버"
 		)
 )
 @SpringBootApplication

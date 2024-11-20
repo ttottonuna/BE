@@ -18,8 +18,8 @@ public class InteractionController {
 
     // 무럭이를 쓰다듬었을 때 pet_count 증가 API
     @PostMapping("/pet")
-    public ResponseEntity<String> incrementPetCount(@RequestBody Map<String, Integer> request) {
-        Integer elderId = request.get("elderId");
+    public ResponseEntity<String> incrementPetCount(@RequestBody ElderRequest request) {
+        Integer elderId = request.getElderId();
         if (elderId == null) {
             return ResponseEntity.badRequest().body("elderId가 제공되지 않았습니다.");
         }
@@ -29,8 +29,8 @@ public class InteractionController {
 
     // 물 주기를 했을 때 water_count 증가 API
     @PostMapping("/water")
-    public ResponseEntity<String> incrementWaterCount(@RequestBody Map<String, Integer> request) {
-        Integer elderId = request.get("elderId");
+    public ResponseEntity<String> incrementWaterCount(@RequestBody ElderRequest request) {
+        Integer elderId = request.getElderId();
         if (elderId == null) {
             return ResponseEntity.badRequest().body("elderId가 제공되지 않았습니다.");
         }
