@@ -25,7 +25,7 @@ public class InteractionController {
             return ResponseEntity.badRequest().body("elderId가 제공되지 않았습니다.");
         }
         interactionService.incrementPetCount(elderId);
-        return ResponseEntity.ok("pet_count 증가 완료");
+        return ResponseEntity.ok("무럭이 성장 ");
     }
 
 }
