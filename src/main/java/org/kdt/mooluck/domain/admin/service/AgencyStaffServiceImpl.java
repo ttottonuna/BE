@@ -3,6 +3,7 @@ package org.kdt.mooluck.domain.admin.service;
 import jakarta.annotation.PostConstruct;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
 import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
+import org.kdt.mooluck.domain.admin.dto.TableResponseDTO;
 import org.kdt.mooluck.domain.admin.mapper.AgencyStaffMapper;
 import org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper;
 import org.kdt.mooluck.security.JwtTokenProvider;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -23,7 +25,7 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
     private final AgencyStaffMapper mapper;
     private final PasswordEncoder passwordEncoder;
-    private final AgencyTableMapper agencyTableMapper;
+    private  final AgencyTableMapper agencyTableMapper;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -50,18 +52,13 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
         logger.info("회원가입 성공: {}", staff.getStaff_email());
     }
 
-    @Override
-    public AgencyTableDTO getMemberById(Long elderId) {
-        // DTO 생성 및 매퍼 호출
-        AgencyTableDTO queryDto = new AgencyTableDTO();
-        queryDto.setElderId(elderId);
 
-        AgencyTableDTO result = agencyTableMapper.getMemberByMemberId(queryDto); // DTO를 전달
-        if (result == null) {
-            throw new IllegalArgumentException("No data found for Interaction ID: " + elderId);
-        }
-        return result;
+    @Override
+    public List<AgencyTableDTO> getMembersByStaffId(Long staffId) {
+        return agencyTableMapper.getMembersByStaffId(staffId);
     }
+
+
 
     @Override
     public String login(String email, String password) {

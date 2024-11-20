@@ -8,6 +8,7 @@ import org.kdt.mooluck.domain.admin.service.AgencyStaffService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -48,9 +49,9 @@ public class AgencyStaffController {
     }
 
     @GetMapping("/table")
-    public ResponseEntity<CustomResponse> getMemberById(@RequestParam Long elderId) {
-        AgencyTableDTO agencyTableDTO = service.getMemberById(elderId);
-        return ResponseEntity.ok(CustomResponse.success(agencyTableDTO));
+    public ResponseEntity<CustomResponse> getMembersByStaffId(@RequestParam Long staffId) {
+        List<AgencyTableDTO> agencyTableDTOs = service.getMembersByStaffId(staffId);
+        return ResponseEntity.ok(CustomResponse.success(agencyTableDTOs));
     }
 
 }
