@@ -29,16 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        // Extract JWT from the request header
         String token = jwtTokenProvider.resolveToken(request);
 
-        // If no token, continue the filter chain
         if (token == null) {
             chain.doFilter(request, response);
             return;
         }
 
-        // Check if the token is in the blacklist
         if (tokenBlacklist.contains(token)) {
             logger.warning("Token is in blacklist: " + token);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -46,20 +43,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Validate the token
-        if (!jwtTokenProvider.validateToken(token)) {
+        if (!jwtTokenProvider.validateToken(token, false)) { // Add `false` for AccessToken validation
             logger.warning("Invalid token: " + token);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Unauthorized: Invalid token.");
             return;
         }
 
-        // If valid, set authentication in SecurityContext
         UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(token);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Continue the filter chain
         chain.doFilter(request, response);
     }
 }

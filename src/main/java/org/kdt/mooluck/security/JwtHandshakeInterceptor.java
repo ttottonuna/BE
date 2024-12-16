@@ -28,7 +28,7 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
         }
 
         // JWT 검증
-        if (token == null || !jwtTokenProvider.validateToken(token)) {
+        if (token == null || !jwtTokenProvider.validateToken(token, false)) { // `false` for AccessToken
             response.setStatusCode(HttpStatus.FORBIDDEN);
             return false; // 검증 실패 시 WebSocket 연결 차단
         }

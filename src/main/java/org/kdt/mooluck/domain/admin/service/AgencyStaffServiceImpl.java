@@ -72,7 +72,7 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             throw new CustomException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        String token = jwtTokenProvider.generateToken(email);
+        String token = jwtTokenProvider.generateAccessToken(email);
         logger.info("로그인 성공: {}", email);
 
         return token;
@@ -94,7 +94,8 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             logger.warn("유효하지 않은 토큰입니다 (블랙리스트 포함): {}", token);
             return false;
         }
-        return jwtTokenProvider.validateToken(token);
+        return jwtTokenProvider.validateToken(token, false); // Add `false` for AccessToken validation
+
     }
 
     @PostConstruct
