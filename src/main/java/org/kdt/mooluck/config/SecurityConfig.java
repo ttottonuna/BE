@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/signup", "/admin/login","/api/elders/**",
+                        .requestMatchers("/admin/signup", "/admin/login","/api/elders/login", "/api/elders/refresh-token",
                                 "/api/weather","/interaction/**", "/admin/table",
                                 "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**",
                                 "/v3/api-docs/**", "/webjars/**","/", "/error").permitAll() // signup, login은 모두 허용
