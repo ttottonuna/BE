@@ -10,7 +10,7 @@
         UPDATE interaction
         SET pet_count = pet_count + 1,
             total_count = total_count + 1,
-            last_interaction = NOW(),
+            date = NOW(),
             first_interval = CASE
                 WHEN HOUR(NOW()) BETWEEN 0 AND 5 THEN first_interval + 1
                 ELSE first_interval
@@ -34,28 +34,31 @@
     <update id="incrementWaterCount">
         UPDATE interaction
         SET water_count = water_count + 1,
-            total_count = total_count + 1,
-            last_interaction = NOW(),
-            first_interval = CASE
-                WHEN HOUR(NOW()) BETWEEN 0 AND 5 THEN first_interval + 1
-                ELSE first_interval
-            END,
-            second_interval = CASE
-                WHEN HOUR(NOW()) BETWEEN 6 AND 11 THEN second_interval + 1
-                ELSE second_interval
-            END,
-            third_interval = CASE
-                WHEN HOUR(NOW()) BETWEEN 12 AND 17 THEN third_interval + 1
-                ELSE third_interval
-            END,
-            fourth_interval = CASE
-                WHEN HOUR(NOW()) BETWEEN 18 AND 23 THEN fourth_interval + 1
-                ELSE fourth_interval
-            END
+        total_count = total_count + 1,
+        date = NOW(),
+        first_interval = CASE
+        WHEN HOUR(NOW()) BETWEEN 0 AND 5 THEN first_interval + 1
+        ELSE first_interval
+        END,
+        second_interval = CASE
+        WHEN HOUR(NOW()) BETWEEN 6 AND 11 THEN second_interval + 1
+        ELSE second_interval
+        END,
+        third_interval = CASE
+        WHEN HOUR(NOW()) BETWEEN 12 AND 17 THEN third_interval + 1
+        ELSE third_interval
+        END,
+        fourth_interval = CASE
+        WHEN HOUR(NOW()) BETWEEN 18 AND 23 THEN fourth_interval + 1
+        ELSE fourth_interval
+        END
         WHERE elder_id = #{elderId}
+
     </update>
 
+
     <!-- 다음날 되면 리셋 - scheduler  -->
+
     <update id="resetCounts">
         UPDATE interaction
         SET pet_count = 0, water_count = 0, total_count = 0,

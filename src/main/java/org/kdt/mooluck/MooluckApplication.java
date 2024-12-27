@@ -14,7 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				description = "스프링 리트리버"
 		)
 )
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "org.kdt.mooluck")
 @MapperScan("org.kdt.mooluck.domain.**.mapper")
 //@MapperScan("org.kdt.mooluck.elder.mapper")
 
