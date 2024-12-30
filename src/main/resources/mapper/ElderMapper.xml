@@ -5,10 +5,19 @@
 
 <mapper namespace="org.kdt.mooluck.domain.elder.mapper.ElderMapper">
 
+    <!-- Elder ID 조회 -->
     <select id="getMemberByMemberId" parameterType="org.kdt.mooluck.domain.elder.dto.ElderDTO" resultType="String">
         SELECT elder_id
         FROM elder
         WHERE elder_account = #{elderAccount} AND elder_pwd = #{elderPwd}
     </select>
+
+    <!-- 비밀번호 조회 -->
+    <select id="getPasswordByAccount" parameterType="String" resultType="String">
+        SELECT elder_pwd
+        FROM elder
+        WHERE elder_account = #{elderAccount}
+    </select>
+
 
 </mapper>
