@@ -1,5 +1,6 @@
 package org.kdt.mooluck.domain.interaction.controller;
 
+
 import org.kdt.mooluck.domain.interaction.service.InteractionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ public class InteractionController {
 
     public InteractionController(InteractionService interactionService) {
         this.interactionService = interactionService;
+
     }
 
     // 무럭이를 쓰다듬었을 때 pet_count 증가 API
@@ -31,6 +33,7 @@ public class InteractionController {
     @PostMapping("/water")
     public ResponseEntity<String> incrementWaterCount(@RequestBody ElderRequest request) {
         Integer elderId = request.getElderId();
+        System.out.println("반응해봐===============================================================: " + elderId); // 로그 추가
         if (elderId == null) {
             return ResponseEntity.badRequest().body("elderId가 제공되지 않았습니다.");
         }

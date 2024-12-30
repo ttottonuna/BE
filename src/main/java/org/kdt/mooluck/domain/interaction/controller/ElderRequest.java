@@ -6,7 +6,6 @@ public class ElderRequest {
     public Integer getElderId() {
         return elderId;
     }
-
     public void setElderId(Integer elderId) {
         this.elderId = elderId;
     }
