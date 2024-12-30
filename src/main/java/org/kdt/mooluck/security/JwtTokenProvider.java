@@ -20,7 +20,7 @@ public class JwtTokenProvider {
     private final long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hour
     private final long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 days
 
-    public String generateAccessToken(String email) {
+    public String generateAccessToken(String email){
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())

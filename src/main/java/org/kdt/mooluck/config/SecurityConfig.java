@@ -14,8 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 import java.util.List;
 import java.util.Set;
@@ -34,12 +32,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/signup", "/admin/login","/api/elders/login", "/api/elders/refresh-token",
-                                "/api/weather","/interaction/**", "/admin/table",
+                        .requestMatchers(
+                                "/admin/signup", "/admin/login", "/api/elders/login", "/api/elders/refresh-token",
+                                "/api/weather", "/interaction/**", "/admin/table",
                                 "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**",
-                                "/v3/api-docs/**", "/webjars/**","/", "/error").permitAll() // signup, login은 모두 허용
+                                "/v3/api-docs/**", "/webjars/**", "/", "/error"
+                        ).permitAll() // signup, login은 모두 허용
                         .anyRequest().authenticated() // 다른 요청은 인증 필요
                 )
                 .addFilterBefore(
@@ -60,16 +61,14 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
+        // CORS 설정
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:8080"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
-        config.setExposedHeaders(List.of("Authorization"));
-        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:8080")); // 허용할 Origin
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP Method
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin")); // 허용할 헤더
+        config.setExposedHeaders(List.of("Authorization")); // 노출할 헤더
 
         source.registerCorsConfiguration("/**", config);
         return source;
-}
-
-
+    }
 }
