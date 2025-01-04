@@ -14,11 +14,6 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    /**
-     * 토큰 검증 엔드포인트
-     * @param authorizationHeader Authorization 헤더에서 Bearer 토큰을 추출
-     * @return 토큰 검증 결과
-     */
     @PostMapping("/validate")
     public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
