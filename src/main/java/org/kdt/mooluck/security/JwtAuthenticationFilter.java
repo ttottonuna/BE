@@ -32,28 +32,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request);
 
         if (token == null) {
+            logger.info("No token found in request.");
             chain.doFilter(request, response);
             return;
         }
 
         if (tokenBlacklist.contains(token)) {
             logger.warning("Token is in blacklist: " + token);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: Blacklisted token.");
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Blacklisted token.");
             return;
         }
 
         if (!jwtTokenProvider.validateToken(token, false)) { // Add `false` for AccessToken validation
             logger.warning("Invalid token: " + token);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Unauthorized: Invalid token.");
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid token.");
             return;
         }
 
+        // 토큰이 유효한 경우 인증 정보 설정
         UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(token);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        logger.info("Token validated successfully for request: " + request.getRequestURI());
+
         chain.doFilter(request, response);
     }
+
+    /**
+     * 에러 응답을 작성하는 유틸리티 메서드
+     */
+    private void sendErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
+        response.setStatus(statusCode);
+        response.setContentType("application/json");
+        response.getWriter().write("{ \"error\": \"" + message + "\" }");
+    }
 }
+
