@@ -1,26 +1,40 @@
 package org.kdt.mooluck.scheduler;
 
-import org.apache.ibatis.session.SqlSession;
+
+import org.kdt.mooluck.domain.interaction.mapper.InteractionMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Component
 public class ResetCountsScheduler {
+    private static final Logger logger = LoggerFactory.getLogger(ResetCountsScheduler.class);
 
-    private final SqlSession sqlSession;
+    private final InteractionMapper interactionMapper;
 
-    // 생성자 주입으로 SqlSession 의존성 주입
-    public ResetCountsScheduler(SqlSession sqlSession) {
-        this.sqlSession = sqlSession;
+    // 생성자 주입으로 -> SqlSession 의존성 주입
+    public ResetCountsScheduler(InteractionMapper interactionMapper) {
+        this.interactionMapper = interactionMapper;
     }
 
-    // 매일 자정에 실행되도록 설정
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정
-    // @Scheduled(fixedRate = 5000) // test. 5초마다 실행
+    @Scheduled(fixedRate = 5000000) //스케쥴러 테스트 83분20초
+//    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 실행
+    @Transactional
     public void resetDailyCounts() {
-        sqlSession.update("org.kdt.mooluck.domain.interaction.mapper.InteractionMapper.resetCounts"); // MyBatis의 매핑된 쿼리 실행
-        System.out.println("Daily counts reset at: " + new Date());
+        try {
+            logger.info("스케줄러 실행 시작: 전날 데이터 백업 및 초기화 작업");
+
+            interactionMapper.PreviousDayData();
+            logger.info("전날 데이터 백업 완료: {}", LocalDate.now().minusDays(1));
+
+            interactionMapper.resetCounts();
+            logger.info("오늘 데이터 초기화 완료: {}", LocalDate.now());
+        } catch (Exception e) {
+            logger.error("스케줄러 작업 중 오류 발생: {}", e.getMessage(), e);
+        }
     }
 }

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @OpenAPIDefinition(
 		info = @Info(
@@ -17,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "org.kdt.mooluck")
 @MapperScan("org.kdt.mooluck.domain.**.mapper")
 //@MapperScan("org.kdt.mooluck.elder.mapper")
-
+@EnableScheduling
 public class MooluckApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MooluckApplication.class, args);
