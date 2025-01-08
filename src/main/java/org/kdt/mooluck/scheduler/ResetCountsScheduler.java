@@ -21,8 +21,8 @@ public class ResetCountsScheduler {
         this.interactionMapper = interactionMapper;
     }
 
-    @Scheduled(fixedRate = 5000000) //스케쥴러 테스트 83분20초
-//    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 실행
+   // @Scheduled(fixedRate = 5000000) //스케쥴러 테스트 83분20초
+    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 실행
     @Transactional
     public void resetDailyCounts() {
         try {
