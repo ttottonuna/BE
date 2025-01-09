@@ -11,4 +11,7 @@ public interface InteractionMapper {
 
     // 특정 elder의 water_count 증가
     void incrementWaterCount(@Param("elderId") int elderId);
+
+    void PreviousDayData();
+    void resetCounts();
 }
