@@ -2,11 +2,12 @@ package org.kdt.mooluck.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 
+import jakarta.servlet.http.HttpServletRequest;
 import javax.crypto.SecretKey;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class JwtTokenProvider {
     private final SecretKey ACCESS_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final SecretKey REFRESH_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hour
+    private final long ACCESS_TOKEN_EXPIRATION = 60000; // 1 min
     private final long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 days
 
     /**
@@ -46,6 +47,18 @@ public class JwtTokenProvider {
                 .signWith(REFRESH_SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    // admin -> access Token 생성
+    public String generateAdminAccessToken(String email, Integer staffId) {
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("staff_id", staffId) // staff_id를 claim에 추가
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .signWith(ACCESS_SECRET_KEY, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 
     /**
      * 요청 헤더에서 토큰 추출

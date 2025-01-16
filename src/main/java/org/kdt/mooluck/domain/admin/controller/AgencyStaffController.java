@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.kdt.mooluck.custom.CustomResponse;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
 import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
+import org.kdt.mooluck.domain.admin.dto.ElderDTO;
 import org.kdt.mooluck.domain.admin.service.AgencyStaffService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,4 +55,10 @@ public class AgencyStaffController {
         return ResponseEntity.ok(CustomResponse.success(agencyTableDTOs));
     }
 
+    // elder 회원가입 (관리자 권한)
+    @PostMapping("/elder/signup")
+    public ResponseEntity<CustomResponse> registerElder(@RequestBody ElderDTO elder) {
+        service.registerElder(elder);
+        return ResponseEntity.ok(CustomResponse.message("노인 등록 성공"));
+    }
 }

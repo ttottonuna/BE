@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -39,7 +41,8 @@ public class SecurityConfig {
                                 "/admin/signup", "/admin/login", "/api/elders/login", "/api/elders/refresh-token",
                                 "/api/weather", "/interaction/**", "/admin/table",
                                 "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**",
-                                "/v3/api-docs/**", "/webjars/**", "/", "/error", "/auth/validate"
+                                "/v3/api-docs/**", "/webjars/**", "/", "/error", "/auth/validate",
+                                "/admin/elder/signup"
                         ).permitAll() // signup, login은 모두 허용
                         .anyRequest().authenticated() // 다른 요청은 인증 필요
                 )

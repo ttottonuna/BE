@@ -11,4 +11,10 @@
         SELECT * FROM agencystaff WHERE staff_email = #{staff_email} LIMIT 1
     </select>
 
+    <!-- elder 회원가입 (관리자 권한)-->
+    <insert id="insertElder">
+        INSERT INTO elder (elder_name, elder_address, elder_number, elder_account, elder_pwd, staff_id)
+        VALUES (#{elderName}, #{elderAddress}, #{elderNumber}, #{elderAccount}, #{elderPwd}, #{staffId})
+    </insert>
+
 </mapper>
