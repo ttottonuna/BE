@@ -10,13 +10,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class TableResponseDTO {
-    private boolean success;                    // JSON의 "success" 필드
-    private ResponseDataDTO response;          // JSON의 "response" 필드
+    private boolean success;
+    private ResponseDataDTO response;
 
     @Getter
     @Setter
     @NoArgsConstructor
     public static class ResponseDataDTO {
-        private List<AgencyTableDTO> data;     // JSON의 "response.data" 필드
+        private List<AgencyTableDTO> data;
     }
 }

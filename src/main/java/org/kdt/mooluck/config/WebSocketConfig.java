@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws-alert")
-                .setAllowedOrigins("http://localhost:5173")  // Vite 개발 서버 주소를 허용
+                .setAllowedOrigins("http://localhost:5173")
                 .withSockJS();
     }
 

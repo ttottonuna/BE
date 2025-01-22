@@ -20,9 +20,9 @@ public class AuthController {
             return ResponseEntity.status(400).body("Missing or invalid Authorization header");
         }
 
-        String token = authorizationHeader.substring(7); // "Bearer " 제거
+        String token = authorizationHeader.substring(7);
 
-        if (!jwtTokenProvider.validateToken(token, false)) { // Access Token 검증
+        if (!jwtTokenProvider.validateToken(token, false)) {
             return ResponseEntity.status(401).body("Invalid token");
         }
 

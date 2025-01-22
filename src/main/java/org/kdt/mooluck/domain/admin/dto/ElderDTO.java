@@ -19,5 +19,5 @@ public class ElderDTO {
     private String elderAccount;
     private String elderPwd;
 
-    private Integer staffId; // 프론트에서 직접 넣어줄 예정
+    private Integer staffId;
 }

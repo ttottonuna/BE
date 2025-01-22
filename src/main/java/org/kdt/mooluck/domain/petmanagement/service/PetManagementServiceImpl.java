@@ -17,11 +17,8 @@ public class PetManagementServiceImpl implements PetManagementService {
     @Override
     @Transactional
     public void incrementPetCount(int interactionId) {
-        // interaction 테이블 업데이트
         System.out.println("Updating interaction table for interaction_id: " + interactionId);
         petManagementMapper.incrementInteractionPetCount(interactionId);
-
-        // pet_management 테이블 업데이트
         System.out.println("Updating pet_management table for interaction_id: " + interactionId);
         petManagementMapper.incrementPetTableCountAndCreatedAt(interactionId);
     }

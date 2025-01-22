@@ -21,26 +21,22 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                    WebSocketHandler wsHandler, Map<String, Object> attributes) {
-        // JWT 토큰 가져오기
         String token = request.getURI().getQuery();
         if (token != null && token.startsWith("token=")) {
-            token = token.substring(6); // "token=" 제거
+            token = token.substring(6);
         }
 
-        // JWT 검증
-        if (token == null || !jwtTokenProvider.validateToken(token, false)) { // `false` for AccessToken
+        if (token == null || !jwtTokenProvider.validateToken(token, false)) {
             response.setStatusCode(HttpStatus.FORBIDDEN);
-            return false; // 검증 실패 시 WebSocket 연결 차단
+            return false;
         }
 
-        // 검증된 사용자 정보 WebSocket 세션에 저장
         attributes.put("user", jwtTokenProvider.getAuthentication(token));
-        return true; // 검증 성공 시 연결 허용
+        return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                WebSocketHandler wsHandler, Exception ex) {
-        // 핸드셰이크 이후의 처리 (필요 시)
     }
 }
