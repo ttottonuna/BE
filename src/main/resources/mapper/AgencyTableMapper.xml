@@ -5,7 +5,6 @@
 
 <mapper namespace="org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper">
 
-    <!-- 결과 매핑 정의 -->
     <resultMap id="AdminTableResultMap" type="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
         <result column="interaction_id" property="interactionId"/>
         <result column="total_count" property="totalCount"/>
@@ -17,7 +16,6 @@
         <result column="elder_number" property="elderNumber"/>
     </resultMap>
 
-    <!-- SQL 쿼리 -->
     <select id="getMembersByStaffId" parameterType="long" resultType="org.kdt.mooluck.domain.admin.dto.AgencyTableDTO">
         SELECT
             i.interaction_id AS interactionId,
@@ -41,6 +39,4 @@
         WHERE
             e.staff_id = #{staffId}
     </select>
-
-
 </mapper>
