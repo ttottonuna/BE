@@ -31,7 +31,6 @@ public class WeatherController {
     @GetMapping
     public ResponseEntity<CustomResponse> getWeather(@RequestParam double lat, @RequestParam double lon) {
         try {
-            // RestTemplate 만들고 접속할 openapi 경로
             RestTemplate restTemplate = new RestTemplate();
             String url = UriComponentsBuilder.fromHttpUrl(URL)
                     .queryParam("lat", lat)
@@ -39,14 +38,11 @@ public class WeatherController {
                     .queryParam("APPID", API_KEY)
                     .toUriString();
 
-            // openapi 리턴값을 map 형태의 response로 저장
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
-            // 그 중에서 icon, timestamp만 추출
             String icon = (String) ((Map<String, Object>) ((Map<String, Object>) ((java.util.List<?>) response.get("weather")).get(0))).get("icon");
             Integer timestamp = (Integer) response.get("dt");
 
-            // weatherDTO에 넣고 리턴
             WeatherDTO weatherDTO = new WeatherDTO();
             weatherDTO.setWeatherIcon(icon);
             weatherDTO.setTimestamp(timestamp);

@@ -16,13 +16,11 @@ public class ResetCountsScheduler {
 
     private final InteractionMapper interactionMapper;
 
-    // 생성자 주입으로 -> SqlSession 의존성 주입
     public ResetCountsScheduler(InteractionMapper interactionMapper) {
         this.interactionMapper = interactionMapper;
     }
 
-   // @Scheduled(fixedRate = 5000000) //스케쥴러 테스트 83분20초
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 실행
+    @Scheduled(cron = "0 0 0 * * ?")
     @Transactional
     public void resetDailyCounts() {
         try {

@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class ResponseDataDTO {
-    private List<AgencyTableDTO> data;  // JSON의 "response.data" 필드
+    private List<AgencyTableDTO> data;
 }

@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 )
 @SpringBootApplication(scanBasePackages = "org.kdt.mooluck")
 @MapperScan("org.kdt.mooluck.domain.**.mapper")
-//@MapperScan("org.kdt.mooluck.elder.mapper")
 @EnableScheduling
 public class MooluckApplication {
 	public static void main(String[] args) {

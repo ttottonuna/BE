@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 토큰이 유효한 경우 인증 정보 설정
         UsernamePasswordAuthenticationToken authentication = jwtTokenProvider.getAuthentication(token);
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -59,9 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    /**
-     * 에러 응답을 작성하는 유틸리티 메서드
-     */
     private void sendErrorResponse(HttpServletResponse response, int statusCode, String message) throws IOException {
         response.setStatus(statusCode);
         response.setContentType("application/json");

@@ -43,9 +43,9 @@ public class AgencyStaffController {
     @PostMapping("/logout")
     public ResponseEntity<CustomResponse> logout(@RequestHeader("Authorization") String token) {
         if (token.startsWith("Bearer ")) {
-            token = token.substring(7); // "Bearer " 제거
+            token = token.substring(7);
         }
-        service.logout(token); // 서비스 로직 호출
+        service.logout(token);
         return ResponseEntity.ok(CustomResponse.message("로그아웃 성공"));
     }
 
@@ -55,7 +55,6 @@ public class AgencyStaffController {
         return ResponseEntity.ok(CustomResponse.success(agencyTableDTOs));
     }
 
-    // elder 회원가입 (관리자 권한)
     @PostMapping("/elder/signup")
     public ResponseEntity<CustomResponse> registerElder(@RequestBody ElderDTO elder) {
         service.registerElder(elder);

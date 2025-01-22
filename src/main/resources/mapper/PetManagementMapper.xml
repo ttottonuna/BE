@@ -2,20 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.kdt.mooluck.domain.petmanagement.mapper.PetManagementMapper">
-
-    <!-- pet_management 데이터 조회 -->
     <select id="getPetDataByInteractionId" resultType="org.kdt.mooluck.domain.petmanagement.dto.PetManagementDTO">
         SELECT * FROM pet_management WHERE interaction_id = #{interaction_id}
     </select>
 
-    <!-- interaction 테이블의 pet_count 증가 -->
     <update id="incrementInteractionPetCount">
         UPDATE interaction
         SET pet_count = pet_count + 1
         WHERE interaction_id = #{interaction_id}
     </update>
 
-    <!-- pet_management 테이블의 pet_count와 created_at 업데이트 -->
     <update id="incrementPetTableCountAndCreatedAt">
         UPDATE pet_management
         SET

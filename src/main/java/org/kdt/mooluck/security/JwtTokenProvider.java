@@ -3,7 +3,6 @@ package org.kdt.mooluck.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +20,9 @@ public class JwtTokenProvider {
     private final SecretKey ACCESS_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final SecretKey REFRESH_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long ACCESS_TOKEN_EXPIRATION = 60000; // 1 min
-    private final long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 days
+    private final long ACCESS_TOKEN_EXPIRATION = 60000;
+    private final long REFRESH_TOKEN_EXPIRATION = 604800000;
 
-    /**
-     * Access Token 생성
-     */
     public String generateAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -36,9 +32,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    /**
-     * Refresh Token 생성
-     */
     public String generateRefreshToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -52,28 +45,21 @@ public class JwtTokenProvider {
     public String generateAdminAccessToken(String email, Integer staffId) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("staff_id", staffId) // staff_id를 claim에 추가
+                .claim("staff_id", staffId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
                 .signWith(ACCESS_SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-
-    /**
-     * 요청 헤더에서 토큰 추출
-     */
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7); // "Bearer " 제거
+            return bearerToken.substring(7);
         }
         return null;
     }
 
-    /**
-     * 토큰 유효성 검증
-     */
     public boolean validateToken(String token, boolean isRefreshToken) {
         try {
             SecretKey key = getSecretKey(isRefreshToken);
@@ -93,9 +79,6 @@ public class JwtTokenProvider {
         return false;
     }
 
-    /**
-     * 토큰에서 이메일 추출
-     */
     public String getEmailFromToken(String token, boolean isRefreshToken) {
         try {
             SecretKey key = getSecretKey(isRefreshToken);
@@ -106,18 +89,13 @@ public class JwtTokenProvider {
         }
     }
 
-    /**
-     * Access Token으로 인증 정보 생성
-     */
+
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String email = getEmailFromToken(token, false); // Access Token만 사용
-        User userDetails = new User(email, "", new ArrayList<>()); // 권한 없이 기본 사용자 생성
+        String email = getEmailFromToken(token, false);
+        User userDetails = new User(email, "", new ArrayList<>());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    /**
-     * Access 또는 Refresh Secret Key 반환
-     */
     private SecretKey getSecretKey(boolean isRefreshToken) {
         return isRefreshToken ? REFRESH_SECRET_KEY : ACCESS_SECRET_KEY;
     }

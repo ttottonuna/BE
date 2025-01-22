@@ -19,11 +19,8 @@ public class WaterManagementServiceImpl implements WaterManagementService {
     @Override
     @Transactional
     public void incrementWaterCount(int interaction_id) {
-        // interaction 테이블 업데이트
         System.out.println("Updating interaction table for interaction_id: " + interaction_id);
         waterManagementMapper.incrementWaterCount(interaction_id);
-
-        // water_management 테이블 업데이트
         System.out.println("Updating water_management table for interaction_id: " + interaction_id);
         waterManagementMapper.incrementWaterTableCountAndcreated_at(interaction_id);
     }

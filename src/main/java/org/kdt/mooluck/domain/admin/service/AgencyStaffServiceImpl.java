@@ -30,7 +30,6 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 토큰 블랙리스트 관리
     private final Set<String> tokenBlacklist = new HashSet<>();
 
     public AgencyStaffServiceImpl(AgencyStaffMapper mapper, PasswordEncoder passwordEncoder, AgencyTableMapper agencyTableMapper, JwtTokenProvider jwtTokenProvider) {
@@ -43,10 +42,8 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
     @Transactional
     @Override
     public void register(AgencyStaffDTO staff) {
-        // 입력값 검증
         staff.validate();
 
-        // 비밀번호 암호화
         staff.setPassword(passwordEncoder.encode(staff.getPassword()));
         mapper.insertStaff(staff);
 
@@ -73,8 +70,6 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             throw new CustomException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        // String token = jwtTokenProvider.generateAccessToken(email);
-        // generateAdminAccessToken을 jwtTokenProvider에 별도로 만들어서, staff_id가 claim에 들어간 형태로 발급 !
         String token = jwtTokenProvider.generateAdminAccessToken(email, staff.getStaff_id());
         logger.info("로그인 성공: {}", email);
 
@@ -87,7 +82,6 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             throw new CustomException("토큰이 유효하지 않습니다.");
         }
 
-        // 토큰을 블랙리스트에 추가
         tokenBlacklist.add(token);
         logger.info("로그아웃 처리됨. 토큰 블랙리스트에 추가: {}", token);
     }
@@ -103,17 +97,12 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
 
     @PostConstruct
     public void initializeBlacklist() {
-        // 서버 시작 시 초기화 작업
         logger.info("토큰 블랙리스트 초기화 완료.");
     }
 
-    // elder 회원가입 (관리자 권한)
     @Override
     public void registerElder(ElderDTO elder) {
-        // 비밀번호 암호화
         elder.setElderPwd(passwordEncoder.encode(elder.getElderPwd()));
-
-        // 프론트에서 `staff_id`를 설정해 줄 것이므로 추가 작업 없이 바로 저장
         mapper.insertElder(elder);
         logger.info("노인 등록 성공: {}", elder.getElderName());
     }

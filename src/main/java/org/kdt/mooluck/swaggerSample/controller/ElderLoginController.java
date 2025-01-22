@@ -16,7 +16,6 @@ public class ElderLoginController {
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password) {
 
-        // Sample response
         if (email.equals("test@example.com") && password.equals("password123")) {
             return "로그인 성공!";
         } else {
