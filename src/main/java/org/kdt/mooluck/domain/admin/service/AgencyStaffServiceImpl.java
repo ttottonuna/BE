@@ -117,4 +117,32 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
         mapper.insertElder(elder);
         logger.info("노인 등록 성공: {}", elder.getElderName());
     }
+
+    // elder 정보 수정 (관리자 권한)
+    @Override
+    public void updateElder(ElderDTO elder) {
+        if (elder == null || elder.getElderId() == null) {
+            throw new IllegalArgumentException("수정할 Elder 정보가 유효하지 않습니다.");
+        }
+
+        try {
+            mapper.updateElder(elder);
+        } catch (Exception e) {
+            throw new RuntimeException("Elder 정보 수정 중 오류 발생", e);
+        }
+    }
+
+    // elder 삭제 (관리자 권한)
+    @Override
+    public void deleteElder(Long elderId) {
+        if (elderId == null) {
+            throw new IllegalArgumentException("삭제할 Elder ID가 유효하지 않습니다.");
+        }
+
+        try {
+            mapper.deleteElder(elderId);
+        } catch (Exception e) {
+            throw new RuntimeException("Elder 삭제 중 오류 발생", e);
+        }
+    }
 }

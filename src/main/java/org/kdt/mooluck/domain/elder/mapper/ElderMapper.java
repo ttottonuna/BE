@@ -11,5 +11,4 @@ public interface ElderMapper {
 
     // 비밀번호 조회
     String getPasswordByAccount(String elderAccount);
-
 }

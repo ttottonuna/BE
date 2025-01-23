@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 "/api/weather", "/interaction/**", "/admin/table",
                                 "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**",
                                 "/v3/api-docs/**", "/webjars/**", "/", "/error", "/auth/validate",
-                                "/admin/elder/signup"
+                                "/admin/elder/**"
                         ).permitAll() // signup, login은 모두 허용
                         .anyRequest().authenticated() // 다른 요청은 인증 필요
                 )
