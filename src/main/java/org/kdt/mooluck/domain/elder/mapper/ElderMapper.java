@@ -7,5 +7,4 @@ import org.kdt.mooluck.domain.elder.dto.ElderDTO;
 public interface ElderMapper {
     String getMemberByMemberId(ElderDTO elderDTO);
     String getPasswordByAccount(String elderAccount);
-
 }

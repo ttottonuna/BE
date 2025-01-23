@@ -60,4 +60,19 @@ public class AgencyStaffController {
         service.registerElder(elder);
         return ResponseEntity.ok(CustomResponse.message("노인 등록 성공"));
     }
+
+    // elder 정보 수정 (관리자 권한)
+    @PutMapping("/elder/update/{elderId}")
+    public ResponseEntity<CustomResponse> updateElder(@PathVariable Long elderId, @RequestBody ElderDTO elder) {
+        elder.setElderId(elderId);
+        service.updateElder(elder);
+        return ResponseEntity.ok(CustomResponse.message("노인 정보 수정 성공"));
+    }
+
+    // elder 삭제 (관리자 권한)
+    @DeleteMapping("/elder/delete/{elderId}")
+    public ResponseEntity<CustomResponse> deleteElder(@PathVariable Long elderId) {
+        service.deleteElder(elderId);
+        return ResponseEntity.ok(CustomResponse.message("노인 정보 삭제 성공"));
+    }
 }

@@ -20,9 +20,9 @@ public class JwtTokenProvider {
     private final SecretKey ACCESS_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final SecretKey REFRESH_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long ACCESS_TOKEN_EXPIRATION = 60000;
+    private final long ACCESS_TOKEN_EXPIRATION = 3600000;
     private final long REFRESH_TOKEN_EXPIRATION = 604800000;
-
+  
     public String generateAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -41,7 +41,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // admin -> access Token 생성
     public String generateAdminAccessToken(String email, Integer staffId) {
         return Jwts.builder()
                 .setSubject(email)
@@ -88,7 +87,6 @@ public class JwtTokenProvider {
             throw new IllegalArgumentException("Invalid token");
         }
     }
-
 
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
         String email = getEmailFromToken(token, false);
