@@ -21,7 +21,7 @@ public class JwtTokenProvider {
     private final SecretKey ACCESS_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final SecretKey REFRESH_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long ACCESS_TOKEN_EXPIRATION = 60000; // 1 min
+    private final long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hour
     private final long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 days
 
     /**
