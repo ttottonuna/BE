@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.domain.petmanagement.mapper.PetManagementMapper">
+    <select id="getPetDataByInteractionId" resultType="org.kdt.mooluck.domain.petmanagement.dto.PetManagementDTO">
+        SELECT * FROM pet_management WHERE interaction_id = #{interaction_id}
+    </select>
+
+    <update id="incrementInteractionPetCount">
+        UPDATE interaction
+        SET pet_count = pet_count + 1
+        WHERE interaction_id = #{interaction_id}
+    </update>
+
+    <update id="incrementPetTableCountAndCreatedAt">
+        UPDATE pet_management
+        SET
+            pet_count = pet_count + 1,
+            created_at = NOW()
+        WHERE interaction_id = #{interaction_id}
+    </update>
+
+</mapper>

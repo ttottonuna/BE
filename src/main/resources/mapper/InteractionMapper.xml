@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.kdt.mooluck.domain.interaction.mapper.InteractionMapper">
+    <update id="incrementPetCount">
+        UPDATE interaction
+        SET pet_count = pet_count + 1,
+            total_count = total_count + 1,
+            date = NOW(),
+            first_interval = CASE
+                                 WHEN HOUR(NOW()) BETWEEN 0 AND 5 THEN first_interval + 1
+            ELSE first_interval
+        END,
+        second_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 6 AND 11 THEN second_interval + 1
+            ELSE second_interval
+        END,
+        third_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 12 AND 17 THEN third_interval + 1
+            ELSE third_interval
+        END,
+        fourth_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 18 AND 23 THEN fourth_interval + 1
+            ELSE fourth_interval
+        END
+        WHERE elder_id = #{elderId}
+        AND DATE(date) = CURDATE();
+    </update>
+
+    <update id="incrementWaterCount">
+        UPDATE interaction
+        SET water_count = water_count + 1,
+            total_count = total_count + 1,
+            date = NOW(),
+            first_interval = CASE
+                                 WHEN HOUR(NOW()) BETWEEN 0 AND 5 THEN first_interval + 1
+            ELSE first_interval
+        END,
+        second_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 6 AND 11 THEN second_interval + 1
+            ELSE second_interval
+        END,
+        third_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 12 AND 17 THEN third_interval + 1
+            ELSE third_interval
+        END,
+        fourth_interval = CASE
+            WHEN HOUR(NOW()) BETWEEN 18 AND 23 THEN fourth_interval + 1
+            ELSE fourth_interval
+        END
+        WHERE elder_id = #{elderId}
+        AND DATE(date) = CURDATE();
+    </update>
+
+    <insert id="PreviousDayData">
+        INSERT INTO interaction (elder_id, water_count, pet_count, total_count, date,
+                                 first_interval, second_interval, third_interval, fourth_interval, status)
+        SELECT DISTINCT elder_id, water_count, pet_count, total_count, CONCAT(DATE(CURDATE() - INTERVAL 1 DAY), ' 00:00:00'),
+                        first_interval, second_interval, third_interval, fourth_interval, '양호'
+        FROM interaction
+        WHERE DATE(date) = CURDATE() - INTERVAL 1 DAY
+          AND NOT EXISTS (
+            SELECT 1
+            FROM interaction
+            WHERE DATE(date) = CURDATE() - INTERVAL 1 DAY
+          AND elder_id = interaction.elder_id
+            );
+    </insert>
+    <insert id="resetCounts">
+        INSERT INTO interaction (elder_id, water_count, pet_count, total_count, date,
+                                 first_interval, second_interval, third_interval, fourth_interval, status)
+        SELECT DISTINCT i.elder_id, 0, 0, 0, NOW(), 0, 0, 0, 0, '양호'
+        FROM interaction i
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM interaction
+            WHERE DATE(date) = DATE(NOW())
+                AND elder_id = i.elder_id
+        )
+        GROUP BY i.elder_id;
+    </insert>
+
+
+</mapper>
