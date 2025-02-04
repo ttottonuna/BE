@@ -1,6 +1,9 @@
 package org.kdt.mooluck.domain.interaction.service;
 
 import org.kdt.mooluck.domain.interaction.mapper.InteractionMapper;
+import org.kdt.mooluck.domain.petmanagement.service.PetManagementService;
+import org.kdt.mooluck.domain.petmanagement.service.PetManagementServiceImpl;
+import org.kdt.mooluck.domain.watermanagement.service.WaterManagementService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,20 +11,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class InteractionServiceImpl implements InteractionService {
 
     private final InteractionMapper interactionMapper;
+    private final WaterManagementService waterManagementService;
+    private final PetManagementService petManagementService;
 
-    public InteractionServiceImpl(InteractionMapper interactionMapper) {
+
+    public InteractionServiceImpl(InteractionMapper interactionMapper, WaterManagementService waterManagementService, PetManagementService petManagementService) {
         this.interactionMapper = interactionMapper;
+        this.waterManagementService = waterManagementService;
+        this.petManagementService = petManagementService;
+
     }
 
     @Override
     @Transactional
     public void incrementPetCount(int elderId) {
+        // INSERT로 오늘 날짜 데이터가 없으면 추가 (대비)
+        interactionMapper.insertIfNotExists(elderId);
+
         interactionMapper.incrementPetCount(elderId);
+        petManagementService.incrementPetCount(elderId);
+
     }
 
     @Override
     @Transactional
-    public void incrementWaterCount(int elderId) { // 새로운 메서드 구현
+    public void incrementWaterCount(int elderId)
+    {
+        // INSERT로 오늘 날짜 데이터가 없으면 추가 (대비)
+        interactionMapper.insertIfNotExists(elderId);
+
         interactionMapper.incrementWaterCount(elderId);
+        waterManagementService.incrementWaterCount(elderId);
     }
 }

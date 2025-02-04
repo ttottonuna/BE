@@ -11,89 +11,114 @@ import jakarta.servlet.http.HttpServletRequest;
 import javax.crypto.SecretKey;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Component
 public class JwtTokenProvider {
 
-    // SecretKey for signing the JWT
-    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final Logger logger = Logger.getLogger(JwtTokenProvider.class.getName());
 
-    // Token expiration time (1 day)
-    private final long EXPIRATION_TIME = 86400000;
+    private final SecretKey ACCESS_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey REFRESH_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final long ACCESS_TOKEN_EXPIRATION = 3600000; // 1 hour
+    private final long REFRESH_TOKEN_EXPIRATION = 604800000; // 7 days
 
     /**
-     * Generate a JWT token with the given email as the subject.
-     *
-     * @param email The email to include in the token's subject.
-     * @return The generated JWT token.
+     * Access Token 생성
      */
-    public String generateToken(String email) {
+    public String generateAccessToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .signWith(ACCESS_SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     /**
-     * Resolve the JWT token from the request header.
-     *
-     * @param request The HTTP request containing the token in the Authorization header.
-     * @return The extracted token, or null if not present.
+     * Refresh Token 생성
+     */
+    public String generateRefreshToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
+                .signWith(REFRESH_SECRET_KEY, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // admin -> access Token 생성
+    public String generateAdminAccessToken(String email, Integer staffId) {
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("staff_id", staffId) // staff_id를 claim에 추가
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION))
+                .signWith(ACCESS_SECRET_KEY, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+
+    /**
+     * 요청 헤더에서 토큰 추출
      */
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+            return bearerToken.substring(7); // "Bearer " 제거
         }
         return null;
     }
 
     /**
-     * Validate the provided JWT token.
-     *
-     * @param token The JWT token to validate.
-     * @return true if the token is valid, false otherwise.
+     * 토큰 유효성 검증
      */
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, boolean isRefreshToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            SecretKey key = getSecretKey(isRefreshToken);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException e) {
-            System.err.println("Token expired: " + e.getMessage());
+            logger.warning("Expired token: " + e.getMessage());
         } catch (UnsupportedJwtException e) {
-            System.err.println("Unsupported token: " + e.getMessage());
+            logger.warning("Unsupported token: " + e.getMessage());
         } catch (MalformedJwtException e) {
-            System.err.println("Malformed token: " + e.getMessage());
+            logger.warning("Malformed token: " + e.getMessage());
         } catch (SignatureException e) {
-            System.err.println("Invalid signature: " + e.getMessage());
+            logger.warning("Invalid signature: " + e.getMessage());
         } catch (IllegalArgumentException e) {
-            System.err.println("Illegal argument token: " + e.getMessage());
+            logger.warning("Empty or null token: " + e.getMessage());
         }
         return false;
     }
 
     /**
-     * Extract the email (subject) from the JWT token.
-     *
-     * @param token The JWT token.
-     * @return The email extracted from the token.
+     * 토큰에서 이메일 추출
      */
-    public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
-                .parseClaimsJws(token).getBody().getSubject();
+    public String getEmailFromToken(String token, boolean isRefreshToken) {
+        try {
+            SecretKey key = getSecretKey(isRefreshToken);
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+        } catch (JwtException e) {
+            logger.warning("Failed to extract email from token: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid token");
+        }
     }
 
     /**
-     * Generate an Authentication object for the user based on the JWT token.
-     *
-     * @param token The JWT token.
-     * @return A UsernamePasswordAuthenticationToken containing the user's email.
+     * Access Token으로 인증 정보 생성
      */
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
-        String email = getEmailFromToken(token);
-        User userDetails = new User(email, "", new ArrayList<>());
+        String email = getEmailFromToken(token, false); // Access Token만 사용
+        User userDetails = new User(email, "", new ArrayList<>()); // 권한 없이 기본 사용자 생성
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    /**
+     * Access 또는 Refresh Secret Key 반환
+     */
+    private SecretKey getSecretKey(boolean isRefreshToken) {
+        return isRefreshToken ? REFRESH_SECRET_KEY : ACCESS_SECRET_KEY;
     }
 }

@@ -13,7 +13,7 @@
         <result column="elder_id" property="elderId"/>
         <result column="elder_name" property="elderName"/>
         <result column="elder_address" property="elderAddress"/>
-        <result column="last_interaction" property="lastCheckIn"/>
+        <result column="date" property="lastCheckIn"/>
         <result column="elder_number" property="elderNumber"/>
     </resultMap>
 
@@ -26,7 +26,7 @@
             e.elder_id AS elderId,
             e.elder_name AS elderName,
             e.elder_address AS elderAddress,
-            i.last_interaction AS lastCheckIn,
+            i.date AS lastCheckIn,
             e.staff_id AS staffId,
             e.elder_number AS elderNumber,
 

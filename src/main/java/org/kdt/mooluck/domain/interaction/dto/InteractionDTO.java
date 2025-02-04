@@ -10,7 +10,7 @@ public class InteractionDTO {
     private int elder_Id;
     private int water_Count;
     private int pet_Count;
-    private String last_Interaction;
+    private String date;
     private String status;
 
 }

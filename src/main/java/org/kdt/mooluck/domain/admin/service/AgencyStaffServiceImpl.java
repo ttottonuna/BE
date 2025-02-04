@@ -3,6 +3,7 @@ package org.kdt.mooluck.domain.admin.service;
 import jakarta.annotation.PostConstruct;
 import org.kdt.mooluck.domain.admin.dto.AgencyStaffDTO;
 import org.kdt.mooluck.domain.admin.dto.AgencyTableDTO;
+import org.kdt.mooluck.domain.admin.dto.ElderDTO;
 import org.kdt.mooluck.domain.admin.dto.TableResponseDTO;
 import org.kdt.mooluck.domain.admin.mapper.AgencyStaffMapper;
 import org.kdt.mooluck.domain.admin.mapper.AgencyTableMapper;
@@ -72,7 +73,9 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             throw new CustomException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
 
-        String token = jwtTokenProvider.generateToken(email);
+        // String token = jwtTokenProvider.generateAccessToken(email);
+        // generateAdminAccessToken을 jwtTokenProvider에 별도로 만들어서, staff_id가 claim에 들어간 형태로 발급 !
+        String token = jwtTokenProvider.generateAdminAccessToken(email, staff.getStaff_id());
         logger.info("로그인 성공: {}", email);
 
         return token;
@@ -94,12 +97,52 @@ public class AgencyStaffServiceImpl implements AgencyStaffService {
             logger.warn("유효하지 않은 토큰입니다 (블랙리스트 포함): {}", token);
             return false;
         }
-        return jwtTokenProvider.validateToken(token);
+        return jwtTokenProvider.validateToken(token, false); // Add `false` for AccessToken validation
+
     }
 
     @PostConstruct
     public void initializeBlacklist() {
         // 서버 시작 시 초기화 작업
         logger.info("토큰 블랙리스트 초기화 완료.");
+    }
+
+    // elder 회원가입 (관리자 권한)
+    @Override
+    public void registerElder(ElderDTO elder) {
+        // 비밀번호 암호화
+        elder.setElderPwd(passwordEncoder.encode(elder.getElderPwd()));
+
+        // 프론트에서 `staff_id`를 설정해 줄 것이므로 추가 작업 없이 바로 저장
+        mapper.insertElder(elder);
+        logger.info("노인 등록 성공: {}", elder.getElderName());
+    }
+
+    // elder 정보 수정 (관리자 권한)
+    @Override
+    public void updateElder(ElderDTO elder) {
+        if (elder == null || elder.getElderId() == null) {
+            throw new IllegalArgumentException("수정할 Elder 정보가 유효하지 않습니다.");
+        }
+
+        try {
+            mapper.updateElder(elder);
+        } catch (Exception e) {
+            throw new RuntimeException("Elder 정보 수정 중 오류 발생", e);
+        }
+    }
+
+    // elder 삭제 (관리자 권한)
+    @Override
+    public void deleteElder(Long elderId) {
+        if (elderId == null) {
+            throw new IllegalArgumentException("삭제할 Elder ID가 유효하지 않습니다.");
+        }
+
+        try {
+            mapper.deleteElder(elderId);
+        } catch (Exception e) {
+            throw new RuntimeException("Elder 삭제 중 오류 발생", e);
+        }
     }
 }

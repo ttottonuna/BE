@@ -11,4 +11,26 @@
         SELECT * FROM agencystaff WHERE staff_email = #{staff_email} LIMIT 1
     </select>
 
+    <!-- elder 회원가입 (관리자 권한)-->
+    <insert id="insertElder">
+        INSERT INTO elder (elder_name, elder_address, elder_number, elder_account, elder_pwd, staff_id)
+        VALUES (#{elderName}, #{elderAddress}, #{elderNumber}, #{elderAccount}, #{elderPwd}, #{staffId})
+    </insert>
+
+    <!-- elder 정보 수정 (관리자 권한)  -->
+    <update id="updateElder">
+        UPDATE elder
+        <set>
+            <if test="elderName != null">elder_name = #{elderName},</if>
+            <if test="elderAddress != null">elder_address = #{elderAddress},</if>
+            <if test="elderNumber != null">elder_number = #{elderNumber},</if>
+        </set>
+        WHERE elder_id = #{elderId}
+    </update>
+
+    <!-- elder 삭제 (관리자 권한)  -->
+    <delete id="deleteElder">
+        DELETE FROM elder
+        WHERE elder_id = #{elderId};
+    </delete>
 </mapper>
